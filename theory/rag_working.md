@@ -1,73 +1,93 @@
-# Working of RAG (Retrieval-Augmented Generation)
+# End-to-End Working of RAG (Retrieval-Augmented Generation)
 
-This document explains **step-by-step how RAG works**, from receiving a query to generating a final answer.
-
----
-
-## 1. User Query
-
-- The process starts when a **user inputs a question** or prompt.
-- Example:  
-  `"What are the side effects of Drug X?"`
+This document explains the **internal workflow of RAG**, from query input to final output, including splitting, retrieval, and generation steps.
 
 ---
 
-## 2. Document Retrieval
+## 1. Query Input
 
-- The **Retriever** searches a knowledge base or dataset for relevant documents.
-- Retrieval methods:
-  - **Sparse retrieval**: TF-IDF, BM25
-  - **Dense retrieval**: Embeddings + similarity search
-- Output: **Top-k relevant documents** for the query.
-
-**Example:**
-
-- Query: `"RAG in AI"`
-- Retriever fetches 5 most relevant documents explaining RAG concepts.
+- A user provides a query or question.
+- Example: `"Explain the side effects of Drug X."`
+- This query is tokenized by the **RAG tokenizer** into input IDs that the model can process.
 
 ---
 
-## 3. Context Construction
+## 2. Query Embedding
 
-- The retrieved documents are **combined with the query** to form the input for the generator.
-- This step ensures the model has:
-  - Contextual information
-  - Factual references
-  - Updated knowledge
-
-**Key Point:** This allows the LLM to avoid hallucinations and produce accurate answers.
+- The tokenized query is passed to the **retriever encoder** to generate a **query embedding** (dense vector).
+- Purpose: To represent the query numerically so it can be compared with document embeddings efficiently.
 
 ---
 
-## 4. Answer Generation
+## 3. Document Retrieval
 
-- The **Generator** (LLM) uses the query + retrieved context to generate the response.
-- Approaches:
-  - **RAG-Sequence**: Generates answer token by token using all retrieved documents.
-  - **RAG-Token**: Considers each token from the retrieved docs probabilistically.
-
-**Result:** A coherent, context-aware response.
-
----
-
-## 5. Output
-
-- The final **answer is returned** to the user.
-- Example:  
-  `"Drug X may cause nausea, dizziness, and mild headaches. Refer to official medical guidelines for detailed information."`
+- RAG uses the query embedding to search a **document index** (knowledge base).
+- Steps:
+  1. **Split the documents** into smaller chunks (e.g., 100–500 tokens each) for efficient retrieval.
+  2. Each chunk has its **precomputed embedding** stored in the index.
+  3. Compute similarity between query embedding and document embeddings (e.g., cosine similarity).
+  4. Retrieve **top-k most relevant document chunks**.
 
 ---
 
-## 6. Summary Flow (Stepwise)
+## 4. Context Construction
 
-1. **Input:** User asks a question.
-2. **Retrieve:** Fetch top-k relevant documents from knowledge base.
-3. **Combine:** Merge query + retrieved documents.
-4. **Generate:** LLM creates an answer using combined context.
-5. **Output:** Present accurate, contextual response to user.
+- The retrieved chunks are **combined with the original query** to form the context for generation.
+- Two main strategies:
+  - **Concatenation:** Join top-k documents + query as a single input sequence for the generator.
+  - **Attention-based:** Model attends to each document separately while generating each token.
 
 ---
 
-## 7. Diagram
+## 5. Generation
 
-User Query → Retriever → Top-k Docs → Context Construction → Generator (LLM) → Output
+- The **generator (LLM)** uses the combined context to produce the answer.
+- Two fusion approaches:
+
+  - **RAG-Sequence:** Generates answer token by token conditioning on all retrieved documents.
+    - Pros: Cohesive answers across multiple docs.
+    - Cons: Slower for many documents.
+  - **RAG-Token:** Generates each token by **marginalizing over all retrieved documents**.
+    - Pros: Faster, can scale to many docs.
+    - Cons: Slightly more complex, token-level fusion.
+
+- During generation:
+  1. The model predicts the next token based on the query + retrieved documents.
+  2. Uses **beam search** or **greedy decoding** to construct the output sequence.
+  3. Repeats until **end-of-sequence token** is produced.
+
+---
+
+## 6. Post-Processing
+
+- Generated text is decoded from tokens back to readable text.
+- Optional:
+  - Remove irrelevant or duplicate info.
+  - Apply formatting or clean-up for the user-facing output.
+
+---
+
+## 7. Output
+
+- The final answer is returned to the user.
+- Example:
+  `"Drug X may cause nausea, dizziness, and mild headaches. Refer to official medical guidelines for details."`
+
+---
+
+## 8. Summary Flow (Stepwise)
+
+1. **User Query:** Input from user.
+2. **Tokenization:** Convert query into input IDs.
+3. **Query Embedding:** Represent query as vector.
+4. **Document Split & Retrieval:** Split corpus → compute similarities → fetch top-k chunks.
+5. **Context Construction:** Combine query + retrieved docs.
+6. **Generation:** LLM generates answer using sequence or token-level fusion.
+7. **Post-Processing:** Clean or format output.
+8. **Output:** Return final answer to user.
+
+---
+
+## 9. Diagram (Optional)
+
+User Query → Tokenize → Embed → Split Docs → Retrieve Top-k → Combine Context → LLM Generation → Post-Processing → Output
