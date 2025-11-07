@@ -1,0 +1,7 @@
+streamlit
+huggingface_hub
+pillow
+python-dotenv
+langchain==0.2.10
+langchain-openai==0.1.17
+langchain-groq==0.1.6
