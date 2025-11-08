@@ -3,17 +3,22 @@ from huggingface_hub import InferenceClient
 from PIL import Image
 import io
 import os
-from dotenv import load_dotenv
 import time
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
+hf_token = os.getenv("HF_SECOND_TOKEN")
 
+
+# --- Streamlit Page Config ---
 st.set_page_config(
     page_title="🎨 AI Image Generator",
     page_icon="🧠",
     layout="centered"
 )
 
+# --- Styling ---
 st.markdown("""
     <style>
         .stApp {
@@ -35,11 +40,6 @@ st.markdown("""
             margin-bottom: 2rem;
             font-size: 1.1rem;
         }
-        .image-card {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-        }
         .spinner-text {
             font-style: italic;
             color: #ccc;
@@ -50,9 +50,9 @@ st.markdown("""
 st.markdown('<div class="main-title">AI Image Generator</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Powered by Qwen-Image-Lightning ⚡</div>', unsafe_allow_html=True)
 
+# --- Sidebar Settings ---
 st.sidebar.header("⚙️ Advanced Settings")
 
-# Added unique keys here
 style_preset = st.sidebar.selectbox(
     "🎨 Style Preset",
     ["Default", "Realistic", "Cartoon", "Cyberpunk", "Fantasy", "Studio Portrait"],
@@ -65,6 +65,23 @@ size = st.sidebar.selectbox(
     key="image_size"
 )
 
+# --- API Key Input ---
+st.sidebar.subheader("🔑 API Access")
+
+hf_token = st.sidebar.text_input(
+    "Enter your Hugging Face API key (optional):",
+    type="password",
+    key="hf_token_input"
+)
+
+# Fallback: use Streamlit secret if user doesn't provide one
+if not hf_token:
+    hf_token = os.environ.get("HF_TOKEN") or st.secrets.get("HF_TOKEN", None)
+
+if not hf_token:
+    st.sidebar.warning("⚠️ No API key found. Please enter one to generate images.")
+
+# --- Session State ---
 if "generated_images" not in st.session_state:
     st.session_state.generated_images = []
 
@@ -72,6 +89,7 @@ if st.sidebar.button("🗑️ Clear History", key="clear_history"):
     st.session_state.generated_images = []
     st.sidebar.success("History cleared!")
 
+# --- Main UI ---
 prompt = st.text_area(
     "🧠 Enter your image description:",
     placeholder="e.g. Astronaut riding a horse on Mars",
@@ -81,11 +99,12 @@ prompt = st.text_area(
 
 generate_button = st.button("🚀 Generate Image", key="generate_button")
 
+# --- Image Generation Logic ---
 if generate_button:
     if not prompt.strip():
         st.warning("⚠️ Please enter a description first.")
-    elif not os.environ.get("HF_TOKEN"):
-        st.error("🚨 Missing API key. Add your HF_TOKEN in the .env file.")
+    elif not hf_token:
+        st.error("🚨 Missing API key. Please enter your Hugging Face token.")
     else:
         with st.spinner("🎨 Creating your masterpiece..."):
             try:
@@ -99,10 +118,7 @@ if generate_button:
                     st.markdown(f"<p class='spinner-text'>{msg}</p>", unsafe_allow_html=True)
                     time.sleep(0.8)
 
-                client = InferenceClient(
-                    provider="fal-ai",
-                    api_key=os.environ.get("HF_TOKEN")
-                )
+                client = InferenceClient(provider="fal-ai", api_key=hf_token)
 
                 full_prompt = f"{prompt}, style: {style_preset}, size: {size}"
                 image = client.text_to_image(
@@ -128,6 +144,7 @@ if generate_button:
             except Exception as e:
                 st.error(f"🚨 Error: {str(e)}")
 
+# --- Recent Generations Section ---
 if st.session_state.generated_images:
     st.markdown("---")
     st.markdown("## 🖼️ Recent Generations")
