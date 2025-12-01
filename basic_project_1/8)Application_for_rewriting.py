@@ -4,37 +4,72 @@ from dotenv import load_dotenv
 from google import genai
 import os
 from docx import Document
-from fpdf import FPDF  # fpdf2 version (supports embed fonts)
+import requests
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib.pagesizes import A4
 
 load_dotenv()
 
-# --------------------------
-# PAGE CONFIG
-# --------------------------
+# =================================================================
+# 🔥 UNICODE PDF GENERATOR (REPORTLAB — 100% SAFE)
+# =================================================================
+def generate_pdf_unicode(text):
+    font_path = "NotoSans-Regular.ttf"
+    font_url = "https://github.com/googlefonts/noto-fonts/raw/main/hinted/ttf/NotoSans/NotoSans-Regular.ttf"
+
+    # Download font once
+    if not os.path.exists(font_path):
+        r = requests.get(font_url)
+        with open(font_path, "wb") as f:
+            f.write(r.content)
+
+    pdf_path = "rewritten.pdf"
+
+    pdfmetrics.registerFont(TTFont("NotoSans", font_path))
+    c = canvas.Canvas(pdf_path, pagesize=A4)
+    c.setFont("NotoSans", 12)
+
+    width, height = A4
+    y = height - 50
+
+    for line in text.split("\n"):
+        if y < 50:  # auto new page
+            c.showPage()
+            c.setFont("NotoSans", 12)
+            y = height - 50
+
+        c.drawString(40, y, line)
+        y -= 18
+
+    c.save()
+    return pdf_path
+
+
+# =================================================================
+# STREAMLIT PAGE CONFIG
+# =================================================================
 st.set_page_config(
     page_title="Re-write your text",
     page_icon="✍️",
     layout="centered"
 )
 
-# --------------------------
-# CSS (NO BLANK BOXES, UI ENHANCED)
-# --------------------------
+# =================================================================
+# CSS UI
+# =================================================================
 st.markdown("""
 <style>
 
-html, body {
-    font-family: 'Inter', sans-serif;
-}
+html, body { font-family: 'Inter', sans-serif; }
 
-.main {
-    padding-top: 0 !important;
-}
+.main { padding-top: 0 !important; }
 
 .main-header {
     text-align: center;
     padding: 0 0 1rem 0;
-    font-size: 2.4rem !important;
+    font-size: 2.4rem;
     background: linear-gradient(90deg, #7F00FF, #E100FF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -58,27 +93,17 @@ textarea, input, select {
     color: white;
     padding: .7rem;
     border-radius: 10px;
-    border: none;
     width: 100%;
     font-size: 1.1rem;
+    border: none;
     transition: 0.2s;
 }
 
-.stButton>button:hover {
-    transform: scale(1.03);
-}
+.stButton>button:hover { transform: scale(1.03); }
 
-.result-box {
+.result-box, .comparison-box {
     background: #181818;
     padding: 1.3rem;
-    border-radius: 12px;
-    border: 1px solid #333;
-    margin-top: 0.7rem;
-}
-
-.comparison-box {
-    background: #141414;
-    padding: 1rem;
     border-radius: 12px;
     border: 1px solid #333;
 }
@@ -86,14 +111,14 @@ textarea, input, select {
 </style>
 """, unsafe_allow_html=True)
 
-# --------------------------
+# =================================================================
 # HEADER
-# --------------------------
+# =================================================================
 st.markdown("<div class='main-header'>✨ Re-write Your Text with Gemini ✍️</div>", unsafe_allow_html=True)
 
-# --------------------------
+# =================================================================
 # PROMPT TEMPLATE
-# --------------------------
+# =================================================================
 template = """
 You are an advanced rewriting model.
 
@@ -121,21 +146,22 @@ prompt = PromptTemplate(
     template=template,
 )
 
-# --------------------------
+# =================================================================
 # GEMINI CLIENT
-# --------------------------
+# =================================================================
 def load_LLM(api_key):
     return genai.Client(api_key=api_key)
 
-# --------------------------
-# SESSION FOR HISTORY
-# --------------------------
+# =================================================================
+# HISTORY
+# =================================================================
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# --------------------------
-# INPUT SECTIONS
-# --------------------------
+
+# =================================================================
+# INPUT UI
+# =================================================================
 
 # API Key
 with st.container():
@@ -144,12 +170,11 @@ with st.container():
     google_api_key = st.text_input("API Key", type="password", placeholder="Enter your Gemini API key")
     st.markdown("</div>", unsafe_allow_html=True)
 
-# Draft Text
+# Text
 with st.container():
     st.markdown("<div class='section-card'>", unsafe_allow_html=True)
     st.subheader("📝 Text to Rewrite")
-    draft_input = st.text_area("Your Text", placeholder="Type or paste text here...", height=150)
-
+    draft_input = st.text_area("Your Text", placeholder="Type or paste text...", height=150)
     if draft_input:
         st.caption(f"Words: {len(draft_input.split())} | Characters: {len(draft_input)}")
     st.markdown("</div>", unsafe_allow_html=True)
@@ -157,6 +182,7 @@ with st.container():
 # Options
 with st.container():
     st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+
     col1, col2 = st.columns(2)
     with col1:
         option_tone = st.selectbox("Tone", ("Formal", "Informal"))
@@ -169,11 +195,13 @@ with st.container():
         language = st.selectbox("Output Language", ["English", "Hindi", "Spanish", "Japanese", "French"])
 
     strength = st.slider("Rewrite Strength", 0, 100, 70)
+
     st.markdown("</div>", unsafe_allow_html=True)
 
-# --------------------------
+
+# =================================================================
 # GENERATE BUTTON
-# --------------------------
+# =================================================================
 if st.button("Rewrite Text ✨"):
 
     if not google_api_key:
@@ -181,12 +209,11 @@ if st.button("Rewrite Text ✨"):
         st.stop()
 
     if not draft_input.strip():
-        st.warning("Please write something first!")
+        st.warning("Please enter text to rewrite!")
         st.stop()
 
     client = load_LLM(google_api_key)
 
-    # Generate rewritten output
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt.format(
@@ -204,58 +231,38 @@ if st.button("Rewrite Text ✨"):
     rewritten_text = response.text
     st.session_state.history.append(rewritten_text)
 
-    # --------------------------
-    # SIDE-BY-SIDE COMPARISON
-    # --------------------------
+    # Comparison
     st.subheader("📊 Side-by-Side Comparison")
-    col1, col2 = st.columns(2)
+    c1, c2 = st.columns(2)
 
-    with col1:
+    with c1:
         st.markdown("**Original**")
         st.markdown(f"<div class='comparison-box'>{draft_input}</div>", unsafe_allow_html=True)
 
-    with col2:
+    with c2:
         st.markdown("**Rewritten**")
         st.markdown(f"<div class='comparison-box'>{rewritten_text}</div>", unsafe_allow_html=True)
 
     st.subheader("🔮 Final Rewritten Text")
     st.markdown(f"<div class='result-box'>{rewritten_text}</div>", unsafe_allow_html=True)
 
-    # --------------------------
-    # DOWNLOAD OPTIONS
-    # --------------------------
-
-    # TXT
+    # Downloads
     st.download_button("⬇️ Download as TXT", rewritten_text, file_name="rewritten.txt")
 
-    # DOCX
     doc = Document()
     doc.add_paragraph(rewritten_text)
-    docx_path = "rewritten.docx"
-    doc.save(docx_path)
-    st.download_button("⬇️ Download as DOCX", open(docx_path, "rb"), file_name="rewritten.docx")
+    doc.save("rewritten.docx")
+    st.download_button("⬇️ Download as DOCX", open("rewritten.docx", "rb"), file_name="rewritten.docx")
 
-    # PDF (Unicode Supported)
-    pdf = FPDF()
-    pdf.add_page()
+    pdf_path = generate_pdf_unicode(rewritten_text)
+    st.download_button("⬇️ Download as PDF (Unicode)", open(pdf_path, "rb"), file_name="rewritten.pdf")
 
-    # NOTE: Keep DejaVuSans.ttf in the same folder
-    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True)
-    pdf.set_font("DejaVu", size=12)
 
-    for line in rewritten_text.split("\n"):
-        pdf.multi_cell(0, 10, line)
-
-    pdf_path = "rewritten.pdf"
-    pdf.output(pdf_path)
-
-    st.download_button("⬇️ Download as PDF (Unicode Supported)", open(pdf_path, "rb"), file_name="rewritten.pdf")
-
-# --------------------------
-# HISTORY SECTION
-# --------------------------
+# =================================================================
+# HISTORY
+# =================================================================
 if st.session_state.history:
     st.subheader("📜 Rewrite History")
-    for i, h in enumerate(reversed(st.session_state.history[-5:])):
+    for i, txt in enumerate(reversed(st.session_state.history[-5:])):
         with st.expander(f"Version {len(st.session_state.history)-i}"):
-            st.write(h)
+            st.write(txt)
