@@ -1,0 +1,34 @@
+.env
+# --- Security (CRITICAL) ---
+.env
+.env.local
+config.json
+secrets.yaml
+api_keys.py
+
+# --- Python Environment ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# --- IDE Settings (VS Code, Pycharm) ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# --- Large Data Files (Optional) ---
+# Prevents uploading huge datasets or PDFs by accident
