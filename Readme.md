@@ -22,6 +22,9 @@ Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG*
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
 ![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
+![Google](https://img.shields.io/badge/Google-412991?style=for-the-badge&logo=google&logoColor=white)
+![GEMINI](https://img.shields.io/badge/GEMINI-412991?style=for-the-badge&logo=gemini&logoColor=white)
+![GROQ](https://img.shields.io/badge/GROQ-412991?style=for-the-badge&logo=groq&logoColor=white)
 
 **GenAI Frameworks**
 ![LangChain](https://img.shields.io/badge/🦜%20LangChain-1C3C3C?style=for-the-badge)
