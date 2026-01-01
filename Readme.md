@@ -10,7 +10,7 @@ I am a passionate AI enthusiast currently building a deep expertise in Generativ
 Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG**.
 
 - 🛠️ **LangChain:** Building modular LLM applications using LCEL (LangChain Expression Language).
-- 🕸️ **LangGraph:** Creating stateful, multi-agent systems with cycles and persistence.
+- 🕸️ **LangGraph:** Creating stateful, multi-agent systems with cycles, persistence, and human-in-the-loop.
 - 🏗️ **Agent Architectures:** Implementing ReAct, Plan-and-Execute, and Multi-agent collaboration patterns.
 - 📚 **Vector Databases:** Optimizing retrieval with Pinecone, ChromaDB, and FAISS.
 
@@ -18,27 +18,47 @@ Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG*
 
 ### 🛠️ Tech Stack & Tools
 
-**AI & Machine Learning**
+**AI Models & Infrastructure**
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75FF?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
-![Google](https://img.shields.io/badge/Google-412991?style=for-the-badge&logo=google&logoColor=white)
-![GEMINI](https://img.shields.io/badge/GEMINI-412991?style=for-the-badge&logo=gemini&logoColor=white)
-![GROQ](https://img.shields.io/badge/GROQ-412991?style=for-the-badge&logo=groq&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge)
+![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)
 
-**GenAI Frameworks**
+**GenAI Frameworks & Orchestration**
 ![LangChain](https://img.shields.io/badge/🦜%20LangChain-1C3C3C?style=for-the-badge)
 ![LangGraph](https://img.shields.io/badge/🕸️%20LangGraph-000000?style=for-the-badge)
 ![LlamaIndex](https://img.shields.io/badge/🦙%20LlamaIndex-000000?style=for-the-badge)
-![Pinecone](https://img.shields.io/badge/Pinecone-000000?style=for-the-badge)
-![Chroma](https://img.shields.io/badge/Chroma-000000?style=for-the-badge)
-![FAISS](https://img.shields.io/badge/FAISS-000000?style=for-the-badge)
+![CrewAI](https://img.shields.io/badge/CrewAI-FF4B4B?style=for-the-badge)
 
+**Vector Databases & Retrieval**
+![Pinecone](https://img.shields.io/badge/Pinecone-27005D?style=for-the-badge)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-3178C6?style=for-the-badge)
+![FAISS](https://img.shields.io/badge/FAISS-76B900?style=for-the-badge)
 
-**Database & Deployment**
-![Pinecone](https://img.shields.io/badge/Pinecone-000000?style=for-the-badge)
+**Development & Deployment**
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005850?style=for-the-badge&logo=fastapi&logoColor=white)
+
+---
+
+### 📁 Featured GenAI Projects
+
+| Project | Tech Stack | Description |
+| :--- | :--- | :--- |
+| **[Multi-Agent Research Catalyst]** | `LangGraph`, `GPT-4o`, `Tavily` | A **Plan-and-Execute** system where a Manager agent decomposes queries into sub-tasks for specialized researchers, featuring a **Self-Correction loop**. |
+| **[Agentic SQL Insights]** | `LangChain`, `Groq`, `PostgreSQL` | An autonomous SQL agent with **Self-Healing** capabilities—it catches its own syntax errors and retries queries automatically. |
+| **[Advanced RAG Engine]** | `LlamaIndex`, `ChromaDB` | Implements **Hybrid Search** and **Reranking** to solve complex, multi-part user queries with high precision and source citations. |
+
+---
+
+### 🧬 Deep Dive: Why LangGraph?
+I specialize in building **Stateful Agents**. Unlike linear chains, my systems use:
+* **Persistence:** Saving thread states so agents "remember" past interactions across sessions.
+* **Cycles:** Allowing agents to loop back and re-evaluate work if a task wasn't completed successfully.
+* **Human-in-the-loop:** Implementing "breakpoints" where the agent pauses for human approval before taking sensitive actions.
 
 ---
 
@@ -52,18 +72,8 @@ Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG*
 
 ---
 
-### 📁 Featured GenAI Projects
-| Project | Tech | Description |
-| :--- | :--- | :--- |
-| **[AI Agent Name]** | LangGraph, GPT-4o | A multi-agent system that researches topics and writes blogs automatically. |
-| **[RAG Chatbot]** | LangChain, Pinecone | Advanced RAG system with citation and source tracking. |
-| **[Agentic SQL]** | LangChain Agents | An agent that can talk to your database and generate visualizations. |
-
----
-
 ### 📫 Connect with me
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/https://www.linkedin.com/in/raghavramani/)
-
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/raghavramani/)
 
 ---
 
