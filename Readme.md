@@ -1,4 +1,4 @@
-# Hi there, I'm [Your Name] 👋 🤖
+# Hi there, I'm Raghav Ramani 
 
 ### 🚀 Generative AI Developer | LLM Orchestration | Agentic Workflows
 
@@ -18,29 +18,47 @@ Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG*
 
 ### 🛠️ Tech Stack & Tools
 
-**AI Models & Infrastructure**
+> **Overview:** My stack is built for **Production-Grade AI**. I focus on low-latency inference (Groq), stateful orchestration (LangGraph), and high-precision retrieval (Advanced RAG).
+
+<details open>
+<summary><b>🤖 AI Models & Infrastructure</b></summary>
+<br>
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75FF?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
 ![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)
+</details>
 
-**GenAI Frameworks & Orchestration**
+<details open>
+<summary><b>🕸️ GenAI Frameworks & Orchestration</b></summary>
+<br>
+
 ![LangChain](https://img.shields.io/badge/🦜%20LangChain-1C3C3C?style=for-the-badge)
 ![LangGraph](https://img.shields.io/badge/🕸️%20LangGraph-000000?style=for-the-badge)
 ![LlamaIndex](https://img.shields.io/badge/🦙%20LlamaIndex-000000?style=for-the-badge)
 ![CrewAI](https://img.shields.io/badge/CrewAI-FF4B4B?style=for-the-badge)
+</details>
 
-**Vector Databases & Retrieval**
+<details open>
+<summary><b>📚 Vector Databases & Retrieval</b></summary>
+<br>
+
 ![Pinecone](https://img.shields.io/badge/Pinecone-27005D?style=for-the-badge)
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-3178C6?style=for-the-badge)
 ![FAISS](https://img.shields.io/badge/FAISS-76B900?style=for-the-badge)
+</details>
 
-**Development & Deployment**
+<details open>
+<summary><b>🚀 Development & Deployment</b></summary>
+<br>
+
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005850?style=for-the-badge&logo=fastapi&logoColor=white)
+</details>
 
 ---
 
