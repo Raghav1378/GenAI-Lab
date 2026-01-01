@@ -30,6 +30,10 @@ Currently, I am diving deep into **Agentic Design Patterns** and **Advanced RAG*
 ![LangChain](https://img.shields.io/badge/🦜%20LangChain-1C3C3C?style=for-the-badge)
 ![LangGraph](https://img.shields.io/badge/🕸️%20LangGraph-000000?style=for-the-badge)
 ![LlamaIndex](https://img.shields.io/badge/🦙%20LlamaIndex-000000?style=for-the-badge)
+![Pinecone](https://img.shields.io/badge/Pinecone-000000?style=for-the-badge)
+![Chroma](https://img.shields.io/badge/Chroma-000000?style=for-the-badge)
+![FAISS](https://img.shields.io/badge/FAISS-000000?style=for-the-badge)
+
 
 **Database & Deployment**
 ![Pinecone](https://img.shields.io/badge/Pinecone-000000?style=for-the-badge)
